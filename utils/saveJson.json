@@ -1,0 +1,32 @@
+{
+  "week_range": "0419-0426",
+  "project": {
+    "type": "商务",
+    "branch": 1,
+    "name": "山西移动能力开放二期",
+    "state": 1,
+    "next_work": "需求调研"
+  },
+  "summarize": {
+    "project_name": "山西移动能力开放二期",
+    "work_type": "设计",
+    "weekly_work": "xxxx",
+    "next_weekly_work": "xxxxx"
+  },
+  "output": {
+    "article_name": "异网账号登陆前端修改方案及修改点",
+    "article_url": "http://eip.teamshub.com/t/xxxxx"
+  },
+  "interest": {
+    "module": "前端一休中心",
+    "technic": "",
+    "cost": 1,
+    "mouth": 3
+  },
+  "assist": {
+    "group_id": 1,
+    "branch_id": 1,
+    "resolve": "",
+    "url": ""
+  }
+}

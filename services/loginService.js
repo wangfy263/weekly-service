@@ -1,0 +1,95 @@
+const retInfo = require('../utils/retInfo')
+const commonUtils = require('../utils/common')
+const {
+  property,
+  queryUserSql,
+  queryGroupSql,
+  queryBaseSql,
+  queryBranchSql,
+  queryLevelSql,
+  queryTypeSql,
+  queryStateSql
+} = require('../utils/constant');
+const {
+  getWeekRange
+} = require('../utils/common');
+const SqliteDB = require('../utils/sqliteDB.js').SqliteDB;
+
+let sqliteDB = new SqliteDB();
+
+const loginService = {}
+
+// const queryUserSql = 'select * from staff where staff_notes_id = ';
+// const queryGroupSql = 'select * from staff_group';
+// const queryBaseSql = 'select * from staff_base';
+// const queryBranchSql = 'select * from staff_branch';
+// const queryLevelSql = 'select * from staff_level';
+// const queryTypeSql = 'select * from staff_type';
+// const queryStateSql = 'select * from project_state';
+
+loginService.login = async (ctx, name, pwd) => {
+  let res = await queryLogin(name);
+  if(!res){ 
+    retInfo.retMsg = '用户名不存在';
+    return retInfo;
+  }
+  if (res[0].staff_password !== pwd) {
+    retInfo.retMsg = "密码错误";
+    return retInfo;
+  }
+  retInfo.retCode = '000000';
+  retInfo.retMsg = '登录成功';
+  retInfo.data = {
+    weekRange: getWeekRange()
+  }
+  // ctx.session.user = res[0];
+  await initSession(ctx, res[0]);
+  return retInfo;
+}
+
+const queryLogin = id => {
+  return new Promise((resolve, reject) => {
+    sqliteDB.queryData(queryUserSql + '\'' + id + '\'', data => {
+      resolve(data);
+    });
+  })
+}
+
+
+const initSession = async (ctx, user) => {
+  // const arr = await Promise.all([queryGroup(user.group_id), queryBase(user.base_id), queryBranch(user.branch_id), queryLevel(user.level_id), queryType(user.type_id)]);
+  const arr = await Promise.all([
+    queryPromise(queryGroupSql), 
+    queryPromise(queryBaseSql), 
+    queryPromise(queryBranchSql), 
+    queryPromise(queryLevelSql), 
+    queryPromise(queryTypeSql),
+    queryPromise(queryStateSql)
+  ])
+  // console.log(arr);
+  for(let i=0;i<arr.length;i++){
+    let item = arr[i];
+    for(obj of item){
+      if (obj.group_id && obj.group_id === user.group_id) user.group = obj.group_name;
+      if (obj.base_id && obj.base_id === user.base_id) user.base = obj.base_name;
+      if (obj.branch_id && obj.branch_id === user.branch_id) user.branch = obj.branch_name;
+      if (obj.level_id && obj.level_id === user.level_id) user.level = obj.level_name;
+      if (obj.type_id && obj.type_id === user.type_id) user.type = obj.type_name;
+    }
+    ctx.session[property[i]] = commonUtils.arrayToMap(item);
+  }
+  ctx.session.user = user;
+}
+
+const queryPromise = (sql) => {
+  return new Promise((resolve, reject) => {
+    sqliteDB.queryData(sql, data => {
+      resolve(data);
+    });
+  }).catch(err => {
+    console.log("===========");
+    console.log(err);
+  });
+}
+
+module.exports = loginService

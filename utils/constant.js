@@ -1,0 +1,26 @@
+const constants = {};
+
+constants.property = ['staff_group', 'staff_base', 'staff_branch', 'staff_level', 'staff_type', 'project_state'];
+
+constants.queryUserSql = 'select * from staff where staff_notes_id = ';
+constants.queryGroupSql = 'select * from staff_group1';
+constants.queryBaseSql = 'select * from staff_base';
+constants.queryBranchSql = 'select * from staff_branch';
+constants.queryLevelSql = 'select * from staff_level';
+constants.queryTypeSql = 'select * from staff_type';
+constants.queryStateSql = 'select * from project_state';
+
+constants.export_condition = " where week_range =";
+constants.queryProjectsSql = "select * from weekly_report_projects";
+constants.querySummarizeSql = "select * from weekly_report_summarize";
+constants.queryOutputSql = "select * from weekly_report_output";
+constants.queryInterestSql = "select * from weekly_report_interest";
+constants.queryAssistSql = "select * from weekly_report_assist";
+
+constants.nosend_condition = "where staff_id not in ";
+constants.queryEmailsSql = "select staff_email from staff ";
+
+constants.staff_condition = "";
+constants.queryStaffSql = "select * from staff ";
+
+module.exports = constants;
