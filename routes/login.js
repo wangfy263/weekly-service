@@ -13,8 +13,37 @@ router.get('/', async (ctx, next) => {
 /* login */
 router.post('/login', async (ctx, next) => {
   const data = ctx.request.body;
+  console.log(data);
   const retInfo = await loginService.login(ctx, data.name, data.pwd);
   ctx.body = retInfo;
+})
+
+/* getUserInfo */
+router.post('/getUserInfo', async (ctx, next) => {
+  // const data = ctx.request.body;
+  const user = ctx.session.user;
+  if(!user){
+    ctx.body = {
+      retCode: '999999',
+      retMsg: '请先登录在访问'
+    }
+    return;
+  }
+  const retInfo = {
+    retCode : '000000',
+    retMsg : '获取用户信息成功',
+    data: user
+  }
+  ctx.body = retInfo;
+})
+
+/* logout */
+router.post('/logout', async (ctx, next) => {
+  ctx.session.user = null;
+  ctx.body = {
+    retCode: '000000',
+    retMsg: '退出成功'
+  };
 })
 
 module.exports = router
