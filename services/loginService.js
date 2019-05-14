@@ -29,7 +29,7 @@ const loginService = {}
 
 loginService.login = async (ctx, name, pwd) => {
   let res = await queryLogin(name);
-  if(!res){ 
+  if(!res || res.length === 0){ 
     retInfo.retMsg = '用户名不存在';
     return retInfo;
   }
