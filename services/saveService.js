@@ -1,4 +1,4 @@
-const retInfo = require('../utils/retInfo')
+const RetInfo = require('../utils/retInfo')
 const SqliteDB = require('../utils/sqliteDB.js').SqliteDB;
 const {
   getWeekRange
@@ -8,6 +8,7 @@ let sqliteDB = new SqliteDB();
 const saveService = {}
 
 saveService.entry = async (ctx, data) => {
+  let retInfo = new RetInfo();
   data.week_range = data.week_range ? data.week_range : getWeekRange();
   const user = ctx.session.user;
   let projectData = {}

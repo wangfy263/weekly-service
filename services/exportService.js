@@ -1,4 +1,4 @@
-const retInfo = require('../utils/retInfo')
+const RetInfo = require('../utils/retInfo')
 const exportExcel = require('../utils/exportExcel')
 const SqliteDB = require('../utils/sqliteDB.js').SqliteDB;
 const {
@@ -28,6 +28,7 @@ const queryWeeklyData = (table, weekRange) => {
 // const property = ['staff_group', 'staff_base', 'staff_branch', 'staff_level', 'staff_type', 'project_state'];
 exportService.export = async function (ctx, inputData) {
   // let weekRange = "0419-0426";
+  let retInfo = new RetInfo();
   let weekRange = inputData.week_range ? inputData.week_range : getWeekRange();
   let excelName = await Promise.all([
     queryWeeklyData(queryProjectsSql, weekRange),

@@ -1,4 +1,4 @@
-const retInfo = require('../utils/retInfo')
+const RetInfo = require('../utils/retInfo')
 const commonUtils = require('../utils/common')
 const {
   property,
@@ -28,6 +28,7 @@ const loginService = {}
 // const queryStateSql = 'select * from project_state';
 
 loginService.login = async (ctx, name, pwd) => {
+  let retInfo = new RetInfo();
   let res = await queryLogin(name);
   if(!res || res.length === 0){ 
     retInfo.retMsg = '用户名不存在';

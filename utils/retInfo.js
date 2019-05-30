@@ -5,4 +5,4 @@ class RetInfo {
   }
 }
 
-module.exports = new RetInfo();
+module.exports = RetInfo;
