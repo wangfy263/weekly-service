@@ -6,10 +6,17 @@ const {
 let sqliteDB = new SqliteDB();
 
 const saveService = {}
+const insertProjectSql = "INSERT INTO WEEKLY_REPORT_PROJECTS (STAFF_ID,PROJECT_TYPE,BRANCH_ID,PROJECT_NAME,PROJECT_STATE_ID,NEXT_WORK,WEEK_RANGE) VALUES(?,?,?,?,?,?,?)";
+const insertSummarizeSql = "INSERT INTO WEEKLY_REPORT_SUMMARIZE (STAFF_ID,STAFF_NAME,STAFF_NOTES_ID,PROJECT_NAME,WORK_TYPE,WEEK_RANGE,WEEKLY_WORK,NEXT_WEEKLY_WORK) VALUES(?,?,?,?,?,?,?,?)";
+const insertOutputSql = "INSERT INTO WEEKLY_REPORT_OUTPUT (STAFF_ID,STAFF_NAME,STAFF_NOTES_ID,ARTICLE_NAME,ARTICLE_URL,WEEK_RANGE) VALUES(?,?,?,?,?,?)";
+const insertInterestSql = "INSERT INTO WEEKLY_REPORT_INTEREST (STAFF_ID,STAFF_NAME,STAFF_NOTES_ID,WEEK_RANGE,INTEREST_MODULE,INTEREST_TECHNIC,INTEREST_COST,INTEREST_MOUTH) VALUES(?,?,?,?,?,?,?,?)";
+const insertAssistSql = "INSERT INTO WEEKLY_REPORT_ASSIST (STAFF_ID,STAFF_NAME,STAFF_NOTES_ID,WEEK_RANGE,GROUP_ID,BRANCH_ID,ASSIST_RESOLVE,ASSIST_URL) VALUES(?,?,?,?,?,?,?,?)";
+
 
 saveService.entry = async (ctx, data) => {
   let retInfo = new RetInfo();
   data.week_range = data.week_range ? data.week_range : getWeekRange();
+  console.log(`保存周期${data.week_range}`)
   const user = ctx.session.user;
   let projectData = {}
   let summarizeData = {}
@@ -58,6 +65,7 @@ saveService.entry = async (ctx, data) => {
   assistData.assist_resolve = data.assist.resolve;
   assistData.assist_url = data.assist.url;
 
+  console.log(summarizeData)
 
   // let obj1 = [projectData.staff_id, projectData.project_type, projectData.branch_id, projectData.project_name, projectData.project_state_id, projectData.next_work, projectData.week_range];
   // let obj2 = [summarizeData.staff_id, summarizeData.staff_name, summarizeData.staff_notes_id, summarizeData.project_name, summarizeData.work_type, summarizeData.week_range, summarizeData.weekly_work, summarizeData.next_weekly_work];
@@ -81,11 +89,6 @@ saveService.entry = async (ctx, data) => {
   return retInfo
 }
 
-const insertProjectSql = "INSERT INTO WEEKLY_REPORT_PROJECTS (STAFF_ID,PROJECT_TYPE,BRANCH_ID,PROJECT_NAME,PROJECT_STATE_ID,NEXT_WORK,WEEK_RANGE) VALUES(?,?,?,?,?,?,?)";
-const insertSummarizeSql = "INSERT INTO WEEKLY_REPORT_SUMMARIZE (STAFF_ID,STAFF_NAME,STAFF_NOTES_ID,PROJECT_NAME,WORK_TYPE,WEEK_RANGE,WEEKLY_WORK,NEXT_WEEKLY_WORK) VALUES(?,?,?,?,?,?,?,?)";
-const insertOutputSql = "INSERT INTO WEEKLY_REPORT_OUTPUT (STAFF_ID,STAFF_NAME,STAFF_NOTES_ID,ARTICLE_NAME,ARTICLE_URL,WEEK_RANGE) VALUES(?,?,?,?,?,?)";
-const insertInterestSql = "INSERT INTO WEEKLY_REPORT_INTEREST (STAFF_ID,STAFF_NAME,STAFF_NOTES_ID,WEEK_RANGE,INTEREST_MODULE,INTEREST_TECHNIC,INTEREST_COST,INTEREST_MOUTH) VALUES(?,?,?,?,?,?,?,?)";
-const insertAssistSql = "INSERT INTO WEEKLY_REPORT_ASSIST (STAFF_ID,STAFF_NAME,STAFF_NOTES_ID,WEEK_RANGE,GROUP_ID,BRANCH_ID,ASSIST_RESOLVE,ASSIST_URL) VALUES(?,?,?,?,?,?,?,?)";
 
 const insertProject = data => {
   return new Promise((resolve,reject) => {
@@ -101,6 +104,7 @@ const insertProject = data => {
 const insertSummarize = data => {
   return new Promise((resolve, reject) => {
     let obj = [[data.staff_id, data.staff_name, data.staff_notes_id, data.project_name, data.work_type, data.week_range, data.weekly_work, data.next_weekly_work]]
+    console.log(obj)
     sqliteDB.insertDataTransaction(insertSummarizeSql, obj, (f) => {
       f ? reject() : resolve()
     });
