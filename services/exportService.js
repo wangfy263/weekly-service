@@ -31,7 +31,7 @@ exportService.export = async function (ctx, inputData) {
   let retInfo = new RetInfo();
   let weekRange = inputData.week_range ? inputData.week_range : getWeekRange();
   console.log(`导出周期${weekRange}`)
-  let excelName = Promise.all([
+  let promiseAll = Promise.all([
     queryWeeklyData(queryProjectsSql, weekRange),
     queryWeeklyData(querySummarizeSql, weekRange),
     queryWeeklyData(queryOutputSql, weekRange),
@@ -97,7 +97,7 @@ exportService.export = async function (ctx, inputData) {
     let excel = exportExcel(exportData, '前端组周报test');
     return Promise.resolve(excel);
   })
-  await excelName
+  let excelName = await promiseAll
   retInfo.retCode = "000000";
   retInfo.retMsg = "导出excel成功";
   retInfo.data = {
