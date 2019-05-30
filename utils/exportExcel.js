@@ -8,7 +8,7 @@ const readModule = () => {
 }
 
 const renderExcel = (data, targetName, exlBuf) => {
-  let excelName = "./public/excel/" + targetName + "@" + data.week_range + ".xlsx";
+  let excelName =  targetName + "@" + data.week_range + ".xlsx";
   ejsexcel.renderExcel(exlBuf, data).then(function (exlBuf2) {
     fs.writeFileSync("./public/excel/" + targetName + "@" + data.week_range + ".xlsx", exlBuf2);
   }).catch(function (err) {
