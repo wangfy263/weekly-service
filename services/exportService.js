@@ -17,14 +17,6 @@ let sqliteDB = new SqliteDB();
 
 const exportService = {};
 
-// const condition = " where week_range =";
-
-// const queryProjectsSql = "select * from weekly_report_projects";
-// const querySummarizeSql = "select * from weekly_report_summarize";
-// const queryOutputSql = "select * from weekly_report_output";
-// const queryInterestSql = "select * from weekly_report_interest";
-// const queryAssistSql = "select * from weekly_report_assist";
-
 const queryWeeklyData = (table, weekRange) => {
   let sql = table + export_condition + weekRange;
   return new Promise((resolve, reject)=>{
@@ -37,7 +29,7 @@ const queryWeeklyData = (table, weekRange) => {
 exportService.export = async function (ctx, inputData) {
   // let weekRange = "0419-0426";
   let weekRange = inputData.week_range ? inputData.week_range : getWeekRange();
-  await Promise.all([
+  let excelName = await Promise.all([
     queryWeeklyData(queryProjectsSql, weekRange),
     queryWeeklyData(querySummarizeSql, weekRange),
     queryWeeklyData(queryOutputSql, weekRange),
@@ -101,11 +93,14 @@ exportService.export = async function (ctx, inputData) {
       exportData.assists.push(obj);
     }
     // console.log(exportData);
-    exportExcel(exportData, '前端组周报test');
-    return Promise.resolve();
+    let excel = exportExcel(exportData, '前端组周报test');
+    return Promise.resolve(excel);
   })
   retInfo.retCode = "000000";
   retInfo.retMsg = "导出excel成功";
+  retInfo.data = {
+    excelName,
+  }
   return retInfo;
 }
 

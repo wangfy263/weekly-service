@@ -24,7 +24,7 @@ router.post('/save', async (ctx, next) => {
  * 入参：{weekRange: '0419-0426'}
  */
 router.post('/export', async (ctx, next) => {
-  // const data = ctx.request.body;
+  const data = ctx.request.body;
   const user = ctx.session.user;
   // if(!user){
   //   ctx.body = {
