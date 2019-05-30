@@ -113,7 +113,11 @@ const insertSummarize = data => {
 
 const insertOutput = data => {
   return new Promise((resolve, reject) => {
-    let obj = [[data.staff_id, data.staff_name, data.staff_notes_id, data.article_name, data.article_url, data.week_range]]
+    if(!data.article_name || !data.article_url){
+      resolve();
+      return
+    }
+    let obj = [[data.staff_id, data.staff_name, data.staff_notes_id, data.article_name, data.article_url, data.week_range]]   
     sqliteDB.insertDataTransaction(insertOutputSql, obj, (f) => {
       f ? reject() : resolve()
     });
@@ -122,6 +126,10 @@ const insertOutput = data => {
 
 const insertInterest = data => {
   return new Promise((resolve, reject) => {
+    if(!data.interest_module || !data.interest_technic){
+      resolve();
+      return
+    }
     let obj = [[data.staff_id, data.staff_name, data.staff_notes_id, data.week_range, data.interest_module, data.interest_technic, data.interest_cost, data.interest_mouth]]
     sqliteDB.insertDataTransaction(insertInterestSql, obj, (f) => {
       f ? reject() : resolve()
@@ -131,6 +139,10 @@ const insertInterest = data => {
 
 const insertAssist = data => {
   return new Promise((resolve, reject) => {
+    if(!data.group_id || !data.branch_id || !data.assist_resolve || !data.assist_url){
+      resolve();
+      return
+    }
     let obj = [[data.staff_id, data.staff_name, data.staff_notes_id, data.week_range, data.group_id, data.branch_id, data.assist_resolve, data.assist_url]]
     sqliteDB.insertDataTransaction(insertAssistSql, obj, (f) => {
       f ? reject() : resolve()
