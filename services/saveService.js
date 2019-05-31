@@ -104,7 +104,6 @@ const insertProject = data => {
 const insertSummarize = data => {
   return new Promise((resolve, reject) => {
     let obj = [[data.staff_id, data.staff_name, data.staff_notes_id, data.project_name, data.work_type, data.week_range, data.weekly_work, data.next_weekly_work]]
-    console.log(obj)
     sqliteDB.insertDataTransaction(insertSummarizeSql, obj, (f) => {
       f ? reject() : resolve()
     });
