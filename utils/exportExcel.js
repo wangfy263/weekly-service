@@ -11,6 +11,7 @@ module.exports = async function exportExcel (data, targetName) {
     let excelName =  targetName + "@" + data.week_range + ".xlsx";
     const exlBuf = await readFileAsync(sourceFileName);
     const exlBuf2 = await ejsexcel.renderExcel(exlBuf, data)
+    console.log(exlBuf2)
     await writeFileAsync("./public/excel/" + targetName + "@" + data.week_range + ".xlsx", exlBuf2);
     return excelName;
   }catch(err) {

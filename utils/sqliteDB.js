@@ -87,8 +87,9 @@ DB.SqliteDB.prototype.transactionFunc = function (funcs) {
   return Promise.all(arr).then(() => {
     this.end()
     return Promise.resolve();
-  }, () => {
+  }).catch((err) => {
     this.rollback()
+    console.error(err)
     return Promise.reject();
   });
 }
