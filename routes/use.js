@@ -34,6 +34,7 @@ router.post('/export', async (ctx, next) => {
     return;
   }
   const retInfo = await exportService.export(ctx, data);
+  console.log('end')
   ctx.body = retInfo;
 })
 

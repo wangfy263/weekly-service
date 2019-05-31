@@ -95,10 +95,13 @@ exportService.export = async function (ctx, inputData) {
       exportData.assists.push(obj);
     }
     return exportData;
-    return Promise.resolve(excel);
   })
+  console.log(promiseAll)
   let data = await promiseAll
+  console.log(promiseAll)
+  console.log(data)
   let excelName = await exportExcel(data, '前端组周报test');
+  console.log(excelName)
   retInfo.retCode = "000000";
   retInfo.retMsg = "导出excel成功";
   retInfo.data = {
