@@ -94,10 +94,11 @@ exportService.export = async function (ctx, inputData) {
       obj.url = assist.assist_url;
       exportData.assists.push(obj);
     }
-    let excel = exportExcel(exportData, '前端组周报test');
+    return exportData;
     return Promise.resolve(excel);
   })
-  let excelName = await promiseAll
+  let data = await promiseAll
+  let excelName = await exportExcel(data, '前端组周报test');
   retInfo.retCode = "000000";
   retInfo.retMsg = "导出excel成功";
   retInfo.data = {
