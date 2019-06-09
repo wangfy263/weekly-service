@@ -23,4 +23,6 @@ constants.queryEmailsSql = "select staff_email from staff ";
 constants.staff_condition = "";
 constants.queryStaffSql = "select * from staff ";
 
+constants.queryUserAccessSql = 'select role_code from staff_role a join staff_role_rel b where a.role_id = b.role_id and b.staff_id = '
+
 module.exports = constants;

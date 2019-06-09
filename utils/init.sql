@@ -11,6 +11,18 @@ create table if not exists staff (
   type_id int not null            /* 岗位类别，规划、设计、实现、测试、产品、运营*/
 );
 
+create table if not exists staff_role (
+  role_id int primary key not null,
+  role_code char(50) not null,
+  role_name char(50) not null
+);
+
+create table if not exists staff_role_rel (
+  rel_id int primary key not null,
+  role_id int not null,
+  staff_id int not null
+);
+
 create table if not exists staff_type (
   type_id int primary key not null,
   type_name char(20) not null
@@ -152,3 +164,16 @@ insert into project_state(state_id, state_name) values(1, '商务');
 insert into project_state(state_id, state_name) values(2, '研发');
 insert into project_state(state_id, state_name) values(3, '培训');
 
+insert into staff_role(role_id, role_code, role_name) values(1, 'super_admin', '超级管理员');
+insert into staff_role(role_id, role_code, role_name) values(2, 'weekly_leader', '周报管理');
+insert into staff_role(role_id, role_code, role_name) values(3, 'weekly_staff', '周报录入');
+
+insert into staff_role_rel(rel_id, role_id, staff_id) values(1, 1, 1);
+insert into staff_role_rel(rel_id, role_id, staff_id) values(2, 2, 1);
+insert into staff_role_rel(rel_id, role_id, staff_id) values(3, 3, 1);
+insert into staff_role_rel(rel_id, role_id, staff_id) values(4, 3, 2);
+insert into staff_role_rel(rel_id, role_id, staff_id) values(5, 3, 3);
+insert into staff_role_rel(rel_id, role_id, staff_id) values(6, 3, 4);
+insert into staff_role_rel(rel_id, role_id, staff_id) values(7, 3, 5);
+insert into staff_role_rel(rel_id, role_id, staff_id) values(8, 2, 6);
+insert into staff_role_rel(rel_id, role_id, staff_id) values(9, 3, 6);

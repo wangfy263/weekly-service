@@ -29,6 +29,8 @@ router.post('/getUserInfo', async (ctx, next) => {
     }
     return;
   }
+  const access = ctx.session.access;
+  user.access = access;
   const retInfo = {
     retCode : '000000',
     retMsg : '获取用户信息成功',

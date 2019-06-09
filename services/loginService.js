@@ -8,7 +8,8 @@ const {
   queryBranchSql,
   queryLevelSql,
   queryTypeSql,
-  queryStateSql
+  queryStateSql,
+  queryUserAccessSql,
 } = require('../utils/constant');
 const {
   getWeekRange
@@ -65,10 +66,11 @@ const initSession = async (ctx, user) => {
     queryPromise(queryBranchSql), 
     queryPromise(queryLevelSql), 
     queryPromise(queryTypeSql),
-    queryPromise(queryStateSql)
+    queryPromise(queryStateSql),
+    queryPromise(queryUserAccessSql + user.staff_id)
   ])
   // console.log(arr);
-  for(let i=0;i<arr.length;i++){
+  for(let i=0;i<arr.length-1;i++){
     let item = arr[i];
     for(obj of item){
       if (obj.group_id && obj.group_id === user.group_id) user.group = obj.group_name;
@@ -79,6 +81,10 @@ const initSession = async (ctx, user) => {
     }
     ctx.session[property[i]] = commonUtils.arrayToMap(item);
   }
+  console.log(arr[arr.length-1])
+  ctx.session.access = arr[arr.length-1].map(item => {
+    return item.role_code;
+  })
   ctx.session.user = user;
 }
 
@@ -88,9 +94,17 @@ const queryPromise = (sql) => {
       resolve(data);
     });
   }).catch(err => {
-    console.log("===========");
     console.log(err);
   });
 }
+
+// const initAccess = async (ctx, user) => {
+//   let sql = queryUserAccessSql + user.staff_id
+//   console.log(sql)
+//   let res = await queryPromise(sql)
+//   return res.map(item => {
+//     return item.role_code;
+//   })
+// }
 
 module.exports = loginService
