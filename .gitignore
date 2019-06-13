@@ -1,3 +1,6 @@
 node_modules/
 public/
 *.db
+utils/crypto/cryptoUtil-test.js
+utils/crypto/rsa_private_key.pem
+utils/crypto/rsa_public_key.pem

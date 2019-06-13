@@ -2,7 +2,7 @@ const constants = {};
 
 constants.property = ['staff_group', 'staff_base', 'staff_branch', 'staff_level', 'staff_type', 'project_state'];
 
-constants.queryUserSql = 'select * from staff where staff_notes_id = ';
+constants.queryUserSql = 'select * from staff where staff_notes_id = ?';
 constants.queryGroupSql = 'select * from staff_group';
 constants.queryBaseSql = 'select * from staff_base';
 constants.queryBranchSql = 'select * from staff_branch';

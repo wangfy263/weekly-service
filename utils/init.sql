@@ -54,6 +54,7 @@ create table if not exists project_state (
 );
 
 create table if not exists weekly_report_projects (
+  weekly_project_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
   project_type char(10) not null,
   branch_id int not null,
@@ -64,6 +65,7 @@ create table if not exists weekly_report_projects (
 );
 
 create table if not exists weekly_report_summarize (
+  weekly_summarize_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
   staff_name char(5) not null,       /* 姓名 */
   staff_notes_id char(20) not null,  /* notesId */
@@ -75,6 +77,7 @@ create table if not exists weekly_report_summarize (
 );
 
 create table if not exists weekly_report_output (
+  weekly_output_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
   staff_name char(5) not null,       /* 姓名 */
   staff_notes_id char(20) not null,  /* notesId */
@@ -84,6 +87,7 @@ create table if not exists weekly_report_output (
 );
 
 create table if not exists weekly_report_interest (
+  weekly_interest_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
   staff_name char(5) not null,       /* 姓名 */
   staff_notes_id char(20) not null,  /* notesId */
@@ -95,6 +99,7 @@ create table if not exists weekly_report_interest (
 );
 
 create table if not exists weekly_report_assist (
+  weekly_assist_id int primary not key null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
   staff_name char(5) not null,       /* 姓名 */
   staff_notes_id char(20) not null,  /* notesId */
