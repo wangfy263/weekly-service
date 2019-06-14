@@ -2,6 +2,9 @@ const crypto = require('crypto');
 const fs = require('fs')
 
 const exportKey = key => {
+  console.log("========")
+  console.log(process.env.NODE_ENV)
+  console.log("========")
   if(process.env.NODE_ENV === 'development') {
     return fs.readFileSync(process.cwd() + '/utils/crypto/rsa_' + key + '_key.pem').toString('ascii');
   }
