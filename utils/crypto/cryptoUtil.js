@@ -1,9 +1,23 @@
 const crypto = require('crypto');
 const fs = require('fs')
 
-const publicKey = fs.readFileSync('/root/crypto/rsa_public_key.pem').toString('ascii');
-const privateKey = fs.readFileSync('/root/crypto/rsa_private_key.pem').toString('ascii');
+const exportKey = key => {
+  if(process.env.NODE_ENV === 'development') {
+    return fs.readFileSync(process.cwd() + '/utils/crypto/rsa_' + key + '_key.pem').toString('ascii');
+  }
+  if(process.env.NODE_ENV === 'production') {
+    return fs.readFileSync('/root/crypto/rsa_' + key + '_key.pem').toString('ascii')
+  }
+  if(process.env.NODE_ENV === 'testing') {
+    return fs.readFileSync(process.cwd()+'/utils/crypto/rsa_' + key + '_key.pem').toString('ascii')
+  } 
+}
+
+const publicKey = exportKey('public');
+const privateKey = exportKey('private');
+
 let cryptoUtil = {}
+
 cryptoUtil.publicEncrypt = (data) => {
   return crypto.publicEncrypt(publicKey, Buffer.from(data)).toString('base64');
 }

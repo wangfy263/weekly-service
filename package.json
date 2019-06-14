@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node bin/www",
+    "start": "export NODE_ENV='development' && node bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",
-    "prd": "pm2 start bin/www",
+    "prd": "export NODE_ENV='production' && pm2 start bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

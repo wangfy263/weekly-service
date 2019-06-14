@@ -1,11 +1,14 @@
 'use strict';
 
 const nodemailer = require('nodemailer');
+const cryptoUtil = require('./crypto/cryptoUtil');
+const senderConfig = require('./config').senderConfig;
+
 
 const sender = {};
 sender.address = '"王飞宇" <wangfeiyu_@126.com>';
-sender.user = 'wangfeiyu_@126.com';
-sender.pass = 'wfy339095626';
+sender.user = cryptoUtil.privateDecrypt(senderConfig.user).toString();
+sender.pass = cryptoUtil.privateDecrypt(senderConfig.pass).toString();
 
 const mail = {}
 

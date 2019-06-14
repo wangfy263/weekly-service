@@ -1,6 +1,5 @@
 
 const mysql = require('mysql');
-// const cryptoUtil = require('./crypto/cryptoUtil-test');
 const cryptoUtil = require('./crypto/cryptoUtil');
 const dbConfig = require('./config').dbConfig;
 
