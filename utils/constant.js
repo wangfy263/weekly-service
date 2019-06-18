@@ -2,6 +2,7 @@ const constants = {};
 
 constants.property = ['staff_group', 'staff_base', 'staff_branch', 'staff_level', 'staff_type', 'project_state'];
 
+constants.queryUserALLSql = 'select * from staff';
 constants.queryUserSql = 'select * from staff where staff_notes_id = ?';
 constants.queryGroupSql = 'select * from staff_group';
 constants.queryBaseSql = 'select * from staff_base';
@@ -24,5 +25,8 @@ constants.staff_condition = "";
 constants.queryStaffSql = "select * from staff ";
 
 constants.queryUserAccessSql = 'select role_code from staff_role a join staff_role_rel b where a.role_id = b.role_id and b.staff_id = '
+
+constants.queryProjects = 'select * from project_info'
+constants.queryProjectsById = 'select * from project_info where staff_id = ?'
 
 module.exports = constants;

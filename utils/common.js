@@ -12,6 +12,16 @@ common.arrayToMap = (array) => {
   return Object.assign(...arr);
 }
 
+common.arrayToMap2 = (array) => {
+  let arr = array.map((item)=>{
+    let map = {};
+    let keys = Object.keys(item)
+    map[item[keys[0]]] = item;
+    return map;
+  })
+  return Object.assign(...arr);
+}
+
 /** 获取weekRange */
 common.getWeekRange = () => {
   let start = moment().startOf('week').add(1, 'd').format('MMDD');

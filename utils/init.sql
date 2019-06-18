@@ -99,7 +99,7 @@ create table if not exists weekly_report_interest (
 );
 
 create table if not exists weekly_report_assist (
-  weekly_assist_id int primary not key null AUTO_INCREMENT COMMENT '主键',
+  weekly_assist_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
   staff_name char(5) not null,       /* 姓名 */
   staff_notes_id char(20) not null,  /* notesId */
@@ -109,6 +109,14 @@ create table if not exists weekly_report_assist (
   assist_resolve char(100) not null,
   assist_url char(100) not null
 );
+
+create table if not exists project_info (
+  project_id int primary key not null AUTO_INCREMENT COMMENT '主键',
+  project_name char(100) not null COMMENT '项目名称',
+  state_id int not null COMMENT '项目类别',
+  branch_id int not null COMMENT '所属分支',
+  staff_id int not null COMMENT 'NOTESID'
+)
 
 /* init data */
 insert into staff_branch(branch_id, branch_name) values(1, '移动总部');
@@ -182,3 +190,10 @@ insert into staff_role_rel(rel_id, role_id, staff_id) values(6, 3, 4);
 insert into staff_role_rel(rel_id, role_id, staff_id) values(7, 3, 5);
 insert into staff_role_rel(rel_id, role_id, staff_id) values(8, 2, 6);
 insert into staff_role_rel(rel_id, role_id, staff_id) values(9, 3, 6);
+
+insert into project_info(project_name, state_id, branch_id, staff_id) values('多语言/互联网安全', 2, 5, 1);
+insert into project_info(project_name, state_id, branch_id, staff_id) values('山西移动全业务支撑平台', 1, 5, 1);
+insert into project_info(project_name, state_id, branch_id, staff_id) values('智慧营业厅', 1, 5, 2);
+insert into project_info(project_name, state_id, branch_id, staff_id) values('北京电信数据分析', 1, 2, 5);
+insert into project_info(project_name, state_id, branch_id, staff_id) values('北京联通触点运营平台', 1, 3, 3);
+insert into project_info(project_name, state_id, branch_id, staff_id) values('云码通-智慧旅游', 2, 20, 4);
