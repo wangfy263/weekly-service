@@ -70,6 +70,49 @@ router.post('/manageProject/findByUserId', async (ctx, next) => {
   ctx.body = retInfo;
 })
 
+router.post('/manageProject/save', async (ctx, next) => {
+  const data = ctx.request.body;
+  const user = ctx.session.user;
+  if(!user){
+    ctx.body = {
+      retCode: '999999',
+      retMsg: '请先登录在访问'
+    }
+    return;
+  }
+  const retInfo = await manageService.save(ctx, data);
+  ctx.body = retInfo;
+})
+
+router.post('/manageProject/update', async (ctx, next) => {
+  const data = ctx.request.body;
+  const user = ctx.session.user;
+  console.log(data)
+  if(!user){
+    ctx.body = {
+      retCode: '999999',
+      retMsg: '请先登录在访问'
+    }
+    return;
+  }
+  const retInfo = await manageService.update(ctx, data);
+  ctx.body = retInfo;
+})
+
+router.post('/manageProject/delete', async (ctx, next) => {
+  const data = ctx.request.body;
+  const user = ctx.session.user;
+  if(!user){
+    ctx.body = {
+      retCode: '999999',
+      retMsg: '请先登录在访问'
+    }
+    return;
+  }
+  const retInfo = await manageService.delete(ctx, data);
+  ctx.body = retInfo;
+})
+
 router.post('/sendEmail', async (ctx, next) => {
   const data = ctx.request.body;
   // const user = ctx.session.user;

@@ -28,5 +28,8 @@ constants.queryUserAccessSql = 'select role_code from staff_role a join staff_ro
 
 constants.queryProjects = 'select * from project_info'
 constants.queryProjectsById = 'select * from project_info where staff_id = ?'
+constants.saveProjectSql = 'insert into project_info set ?'
+constants.updProjectSql = 'update project_info set project_name = ?, state_id = ?, branch_id = ?, staff_id = ? where project_id=?'
+constants.delProjectSql = 'delete from project_info where project_id = ?'
 
 module.exports = constants;
