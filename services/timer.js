@@ -1,7 +1,7 @@
 const schedule = require('node-schedule');
 const moment = require('moment');
 const holidays = require('../utils/holidays');
-const emailService = require('./emailService');
+const emailService = require('./emailService-for-mysql');
 
 /**
  * 根据节假日自动通知任务；
@@ -32,7 +32,6 @@ const obtainDate = () => {
   date.current = holidays[current.split('-')[0]][current.split('-')[1]];
   date.next = holidays[next.split('-')[0]][next.split('-')[1]];
   date.next2 = holidays[next2.split('-')[0]][next2.split('-')[1]];
-  // console.log(date)
   return date;
 }
 scheduleCronstyle();

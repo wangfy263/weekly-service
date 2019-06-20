@@ -26,7 +26,7 @@ const mysqlDB = require('../utils/mysqlDB')
 const {
   export_condition,
   nosend_condition,
-  queryOutputSql,
+  querySummarizeSql,
   queryEmailsSql
 } = require('../utils/constant')
 
@@ -38,10 +38,9 @@ const {
 const emailService = {};
 
 const staffWhoNoSend = async (weekRange) => {
-  // let weekRange = "'0419-0426'";
   let staffs = new Set();
-  let list = await queryWeeklyData(queryOutputSql + export_condition + weekRange);
-  // console.log(list)
+  let sql = querySummarizeSql + export_condition + "'" +weekRange + "'";
+  let list = await queryWeeklyData(sql);
   for(let item of list){
     staffs.add(item.staff_id);
   }
@@ -53,7 +52,9 @@ const staffEmail = async (staffs) => {
   let emails = await queryWeeklyData(queryEmailsSql + nosend_condition + '(' + staffStr + ')')
   let arr = [];
   for(email of emails){
-    arr.push(email.staff_email);
+    if(email.staff_email.indexOf('shenjb') === -1){
+      arr.push(email.staff_email);
+    }
   }
   return arr;
 }
@@ -88,7 +89,9 @@ emailService.weeklyNoticeEmail = async function(){
   let emails = await queryWeeklyData(queryEmailsSql)
   let arr = [];
   for (email of emails) {
-    arr.push(email.staff_email);
+    if(email.staff_email.indexOf('shenjb') === -1){
+      arr.push(email.staff_email);
+    }
   }
   mail.sendMail(arr, [], '【前端能开&技术栈 项目周报】请To中各位反馈本周周报，明天下午17点前反馈。', '');
 }

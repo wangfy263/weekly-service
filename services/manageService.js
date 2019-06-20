@@ -20,10 +20,10 @@ manageService.findByUserId = async function(ctx, data){
     let l = list.map(item=>{
       let obj = {}
       obj.name = item.project_name;
-      obj.branch = `${item.branch_id}`
-      obj.type = states[item.state_id]
-      obj.next_work = ''
-      obj.state = '1'
+      obj.branch = `${item.branch_id}`;
+      obj.type = `${item.state_id}`;
+      obj.next_work = '';
+      obj.state = '1';
       return obj
     })
     retInfo.retCode = '000000';

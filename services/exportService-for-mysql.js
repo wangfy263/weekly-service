@@ -53,10 +53,10 @@ exportService.export = async function (ctx, inputData) {
     exportData.assists = [];
     for(let project of data[0]){
       let obj = {};
-      obj.proType = project.project_type;
+      obj.proType = ctx.session["project_state"][project.project_type];
       obj.branch = ctx.session["staff_branch"][project.branch_id];
       obj.proName = project.project_name;
-      obj.state = ctx.session["project_state"][project.project_state_id]
+      obj.state = ctx.session["pro_state"][project.project_state_id]
       obj.next = project.next_work;
       for( let item of users) {
         if(item.staff_id === project.staff_id){

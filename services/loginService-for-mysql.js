@@ -18,14 +18,6 @@ const mysqlDB = require('../utils/mysqlDB')
 
 const loginService = {}
 
-// const queryUserSql = 'select * from staff where staff_notes_id = ';
-// const queryGroupSql = 'select * from staff_group';
-// const queryBaseSql = 'select * from staff_base';
-// const queryBranchSql = 'select * from staff_branch';
-// const queryLevelSql = 'select * from staff_level';
-// const queryTypeSql = 'select * from staff_type';
-// const queryStateSql = 'select * from project_state';
-
 loginService.login = async (ctx, name, pwd) => {
   let retInfo = new RetInfo();
   let res = await queryLogin(name);
@@ -44,6 +36,22 @@ loginService.login = async (ctx, name, pwd) => {
   }
   // ctx.session.user = res[0];
   await initSession(ctx, res[0]);
+  return retInfo;
+}
+
+loginService.initEnum = async () => {
+  let retInfo = new RetInfo();
+  const enumerates = await initEnumerate();
+  if (enumerates) {
+    const proStateEnum = enumerates[0];
+    const branchEnum = enumerates[1];
+    retInfo.retCode = '000000';
+    retInfo.retMsg = '查询初始化m';
+    retInfo.data = {
+      proStateEnum,
+      branchEnum
+    }
+  }
   return retInfo;
 }
 
@@ -77,6 +85,7 @@ const initSession = async (ctx, user) => {
     }
     ctx.session[property[i]] = commonUtils.arrayToMap(item);
   }
+  ctx.session['pro_state'] = {'1': '正常', '2': '紧急'};
   console.log(arr[arr.length-1])
   ctx.session.access = arr[arr.length-1].map(item => {
     return item.role_code;
@@ -88,13 +97,16 @@ const queryPromise = (sql) => {
   return mysqlDB.queryOnly(sql);
 }
 
-// const initAccess = async (ctx, user) => {
-//   let sql = queryUserAccessSql + user.staff_id
-//   console.log(sql)
-//   let res = await queryPromise(sql)
-//   return res.map(item => {
-//     return item.role_code;
-//   })
-// }
+/**
+ * 初始化枚举值
+ */
+const initEnumerate = async () => {
+  return await Promise.all([
+    queryPromise('select * from project_state'),
+    queryPromise('select * from staff_branch')
+  ]).catch(err => {
+    console.error(err)
+  }) 
+}
 
 module.exports = loginService

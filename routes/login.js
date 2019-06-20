@@ -2,7 +2,6 @@ const router = require('koa-router')()
 const loginService = require('../services/loginService-for-mysql');
 // const loginService = require('../services/loginService');
 
-
 router.prefix('/staff')
 
 router.get('/', async (ctx, next) => {
@@ -37,6 +36,11 @@ router.post('/getUserInfo', async (ctx, next) => {
     retMsg : '获取用户信息成功',
     data: user
   }
+  ctx.body = retInfo;
+})
+
+router.post('/initEnum', async (ctx, next) => {
+  const retInfo =  await loginService.initEnum();
   ctx.body = retInfo;
 })
 
