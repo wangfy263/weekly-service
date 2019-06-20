@@ -76,7 +76,7 @@ saveService.entry = async (ctx, data) => {
     })
   }
   if(data.assist.length > 0){
-    data.interest.forEach(item => {
+    data.assist.forEach(item => {
       let assistData = {}
       assistData.staff_id = user.staff_id;
       assistData.staff_name = user.staff_name;
@@ -89,6 +89,8 @@ saveService.entry = async (ctx, data) => {
       assistDataList.push(assistData)
     })
   }
+  console.log(data.assist);
+  console.log(assistDataList)
   let list = [
     [insertProjectSql, projectDataList],
     [insertSummarizeSql, summarizeDataList]
@@ -97,10 +99,10 @@ saveService.entry = async (ctx, data) => {
     list.push([insertOutputSql, outputDataList])
   }
   if(interestDataList.length>0){
-    list.push([insertInterestSql, outputDataList])
+    list.push([insertInterestSql, interestDataList])
   }
   if(assistDataList.length>0){
-    list.push([insertAssistSql, outputDataList])
+    list.push([insertAssistSql, assistDataList])
   }
   await mysqlDB.transactionFunc(list).then(() => {
     retInfo.retCode = "000000";

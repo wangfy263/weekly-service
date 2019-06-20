@@ -80,7 +80,7 @@ const commit = (connection) => {
 const rollback = (connection, err) => {
   return new Promise(( resolve, reject ) => {
     connection.rollback(function() {
-      console.error('*****回滚异常：'+err)
+      console.error('*****回滚成功，回滚原因：'+err)
       resolve(false)
     })
   })
@@ -91,10 +91,10 @@ class MysqlDB {
     if(!pool){
       mysql.createPool({
         connectionLimit : 10,
-        host     : '47.104.199.74',
-        user     : 'root',
-        password : '123Qwe!!',
-        database : 'aliyun_mysql'
+        host     : cryptoUtil.privateDecrypt(dbConfig.host).toString(),
+        user     : cryptoUtil.privateDecrypt(dbConfig.user).toString(),
+        password : cryptoUtil.privateDecrypt(dbConfig.password).toString(),
+        database : cryptoUtil.privateDecrypt(dbConfig.database).toString()
       });
     }
   }

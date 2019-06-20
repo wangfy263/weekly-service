@@ -7,7 +7,8 @@ const {
   querySummarizeSql,
   queryOutputSql,
   queryInterestSql,
-  queryAssistSql
+  queryAssistSql,
+  queryStaffSql
 } = require('../utils/constant');
 const {
   getWeekRange
@@ -18,7 +19,15 @@ const exportService = {};
 
 const queryWeeklyData = (table, weekRange) => {
   let sql = `${table}${export_condition}'${weekRange}'`;
-  return mysqlDB.queryOnly(sql);
+  return mysqlDB.queryOnly(sql).catch(err => {
+    console.log(err)
+  });
+}
+
+const queryUsers = () => {
+  return mysqlDB.queryOnly(queryStaffSql).catch(err => {
+    console.log(err)
+  });
 }
 exportService.export = async function (ctx, inputData) {
   // let weekRange = "0419-0426";
@@ -26,6 +35,7 @@ exportService.export = async function (ctx, inputData) {
   let weekRange = inputData.week_range ? inputData.week_range : getWeekRange();
   let exportName = inputData.fileName ? inputData.fileName : '前端组周报'
   console.log(`导出周期${weekRange}`)
+  let users = await queryUsers();
   let promiseAll = Promise.all([
     queryWeeklyData(queryProjectsSql, weekRange),
     queryWeeklyData(querySummarizeSql, weekRange),
@@ -48,6 +58,12 @@ exportService.export = async function (ctx, inputData) {
       obj.proName = project.project_name;
       obj.state = ctx.session["project_state"][project.project_state_id]
       obj.next = project.next_work;
+      for( let item of users) {
+        if(item.staff_id === project.staff_id){
+          obj.name = item.staff_notes_id;
+          break;
+        }
+      }
       exportData.projects.push(obj);
     }
     for(let summarize of data[1]){
