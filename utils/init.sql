@@ -1,9 +1,9 @@
 create table if not exists staff (
   staff_id int primary key not null, /* */
-  staff_name char(5) not null,       /* 姓名 */
-  staff_notes_id char(20) not null,  /* notesId */
-  staff_password char(20) not null,
-  staff_email char(50) not null,
+  staff_name varchar(5) not null,       /* 姓名 */
+  staff_notes_id varchar(20) not null,  /* notesId */
+  staff_password varchar(20) not null,
+  staff_email varchar(50) not null,
   group_id int not null,          /* 组别，前端or能开*/
   base_id int not null,           /* base地*/
   branch_id int not null,         /* 所属分支 */
@@ -13,8 +13,8 @@ create table if not exists staff (
 
 create table if not exists staff_role (
   role_id int primary key not null,
-  role_code char(50) not null,
-  role_name char(50) not null
+  role_code varchar(50) not null,
+  role_name varchar(50) not null
 );
 
 create table if not exists staff_role_rel (
@@ -25,75 +25,75 @@ create table if not exists staff_role_rel (
 
 create table if not exists staff_type (
   type_id int primary key not null,
-  type_name char(20) not null
+  type_name varchar(20) not null
 );
 
 create table if not exists staff_group (
   group_id int primary key not null,
-  group_name char(20) not null
+  group_name varchar(20) not null
 );
 
 create table if not exists staff_base (
   base_id int primary key not null,
-  base_name char(50) not null
+  base_name varchar(50) not null
 );
 
 create table if not exists staff_branch (
   branch_id int primary key not null,
-  branch_name char(50) not null
+  branch_name varchar(50) not null
 );
 
 create table if not exists staff_level (
   level_id int primary key not null,
-  level_name char(10) not null
+  level_name varchar(10) not null
 );
 
 create table if not exists project_state (
   state_id int primary key not null,
-  state_name char(10) not null
+  state_name varchar(10) not null
 );
 
 create table if not exists weekly_report_projects (
   weekly_project_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
-  project_type char(10) not null,
+  project_type varchar(10) not null,
   branch_id int not null,
-  project_name char(100) not null,
+  project_name varchar(100) not null,
   project_state_id int not null,
-  next_work char(100) not null,
-  week_range char(20) not null
+  next_work varchar(1000) not null,
+  week_range varchar(20) not null
 );
 
 create table if not exists weekly_report_summarize (
   weekly_summarize_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
-  staff_name char(5) not null,       /* 姓名 */
-  staff_notes_id char(20) not null,  /* notesId */
-  project_name char(100) not null,
-  work_type char(10) not null,
-  week_range char(20) not null,
-  weekly_work char(200) not null,
-  next_weekly_work char(200) not null
+  staff_name varchar(5) not null,       /* 姓名 */
+  staff_notes_id varchar(20) not null,  /* notesId */
+  project_name varchar(100) not null,
+  work_type varchar(10) not null,
+  week_range varchar(20) not null,
+  weekly_work varchar(1000) not null,
+  next_weekly_work varchar(1000) not null
 );
 
 create table if not exists weekly_report_output (
   weekly_output_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
-  staff_name char(5) not null,       /* 姓名 */
-  staff_notes_id char(20) not null,  /* notesId */
-  article_name char(100) not null,
-  article_url char(100) not null,
-  week_range char(20) not null
+  staff_name varchar(5) not null,       /* 姓名 */
+  staff_notes_id varchar(20) not null,  /* notesId */
+  article_name varchar(200) not null,
+  article_url varchar(200) not null,
+  week_range varchar(20) not null
 );
 
 create table if not exists weekly_report_interest (
   weekly_interest_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
-  staff_name char(5) not null,       /* 姓名 */
-  staff_notes_id char(20) not null,  /* notesId */
-  week_range char(20) not null,
-  interest_module char(50) not null,
-  interest_technic char(100) not null,
+  staff_name varchar(5) not null,       /* 姓名 */
+  staff_notes_id varchar(20) not null,  /* notesId */
+  week_range varchar(20) not null,
+  interest_module varchar(200) not null,
+  interest_technic varchar(200) not null,
   interest_cost int not null,       /*成本，投入人天*/
   interest_mouth int not null      /*参与月份*/
 );
@@ -101,18 +101,18 @@ create table if not exists weekly_report_interest (
 create table if not exists weekly_report_assist (
   weekly_assist_id int primary key not null AUTO_INCREMENT COMMENT '主键',
   staff_id int not null,
-  staff_name char(5) not null,       /* 姓名 */
-  staff_notes_id char(20) not null,  /* notesId */
-  week_range char(20) not null,
+  staff_name varchar(5) not null,       /* 姓名 */
+  staff_notes_id varchar(20) not null,  /* notesId */
+  week_range varchar(20) not null,
   group_id int not null,
   branch_id int not null,
-  assist_resolve char(100) not null,
-  assist_url char(100) not null
+  assist_resolve varchar(100) not null,
+  assist_url varchar(100) not null
 );
 
 create table if not exists project_info (
   project_id int primary key not null AUTO_INCREMENT COMMENT '主键',
-  project_name char(100) not null COMMENT '项目名称',
+  project_name varchar(100) not null COMMENT '项目名称',
   state_id int not null COMMENT '项目类别',
   branch_id int not null COMMENT '所属分支',
   staff_id int not null COMMENT 'NOTESID'
