@@ -24,12 +24,11 @@ common.arrayToMap2 = (array) => {
 
 /** 获取weekRange */
 common.getWeekRange = () => {
-  let start = moment().startOf('week').add(1, 'd').format('MMDD');
-  let end = moment().endOf('week').subtract(1, 'd').format('MMDD');
-  if(moment().format('MMDD') === '0707'){
-    start = '0701';
-    end = '0705';
-  }
+  // let start = moment().startOf('week').add(1, 'd').format('MMDD');
+  // let end = moment().endOf('week').subtract(1, 'd').format('MMDD');
+  let weekOfday = moment().format('E') // 计算今天是这周第几天
+  let start = moment().subtract(weekOfday - 1, 'days').format('MMDD')
+  let end = moment().add(7 - weekOfday, 'days').format('MMDD')
   return start + "-" + end;
 }
 
