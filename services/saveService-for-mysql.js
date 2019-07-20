@@ -42,7 +42,7 @@ saveService.entry = async (ctx, data) => {
       summarizeData.staff_name = user.staff_name;
       summarizeData.staff_notes_id = user.staff_notes_id;
       summarizeData.project_name = item.project_name;
-      summarizeData.work_type = item.work_type;
+      summarizeData.work_type = ctx.session["project_state"][item.work_type];
       summarizeData.week_range = data.week_range;
       summarizeData.weekly_work = item.weekly_work;
       summarizeData.next_weekly_work = item.next_weekly_work;
@@ -89,8 +89,6 @@ saveService.entry = async (ctx, data) => {
       assistDataList.push(assistData)
     })
   }
-  console.log(data.assist);
-  console.log(assistDataList)
   let list = [
     [insertProjectSql, projectDataList],
     [insertSummarizeSql, summarizeDataList]

@@ -42,6 +42,20 @@ router.post('/export', async (ctx, next) => {
   ctx.body = retInfo;
 })
 
+router.post('/queryGroups', async (ctx, next) => {
+  const data = ctx.request.body;
+  const user = ctx.session.user;
+  if(!user){
+    ctx.body = {
+      retCode: '999999',
+      retMsg: '请先登录在访问'
+    }
+    return;
+  }
+  const retInfo = await exportService.queryGroups(ctx, data);
+  ctx.body = retInfo;
+})
+
 router.post('/manageProject/find', async (ctx, next) => {
   const data = ctx.request.body;
   const user = ctx.session.user;

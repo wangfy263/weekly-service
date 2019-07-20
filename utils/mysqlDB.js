@@ -38,6 +38,7 @@ const getConnection = ( ) => {
 const query = (connection, sql, values ) => {
   return new Promise(( resolve, reject) => {
     console.log('sql:'+ sql)
+    console.log('values:'+ values)
     connection.query(sql, values, ( err, rows) => {
       if ( err ) {
         console.log('*****查询异常：' + err);
@@ -124,12 +125,16 @@ class MysqlDB {
       await beginTransaction(connection)
       let arr = [];
       for(let item of funcs){
-        arr.push(query(connection, item[0], item[1]));
+        for(let each of item[1]){
+          arr.push(query(connection, item[0], each));
+        }
       }
       await Promise.all(arr)
-      return commit(connection)
+      await commit(connection)
     }catch(err){
-      return rollback(connection, err)
+      console.error("保存失败")
+      rollback(connection, err)
+      return Promise.reject()
     }finally{
       connection.release()
     }

@@ -8,7 +8,9 @@ const {
   queryOutputSql,
   queryInterestSql,
   queryAssistSql,
-  queryStaffSql
+  queryStaffSql,
+  staff_condition,
+  queryGroupSql
 } = require('../utils/constant');
 const {
   getWeekRange
@@ -24,8 +26,18 @@ const queryWeeklyData = (table, weekRange) => {
   });
 }
 
-const queryUsers = () => {
-  return mysqlDB.queryOnly(queryStaffSql).catch(err => {
+const queryUsers = (groupId) => {
+  let sql = queryStaffSql;
+  if(groupId){
+    sql = sql + staff_condition + groupId;
+  }
+  return mysqlDB.queryOnly(sql).catch(err => {
+    console.log(err)
+  });
+}
+
+const queryGroups = () => {
+  return mysqlDB.queryOnly(queryGroupSql).catch(err => {
     console.log(err)
   });
 }
@@ -33,9 +45,14 @@ exportService.export = async function (ctx, inputData) {
   // let weekRange = "0419-0426";
   let retInfo = new RetInfo();
   let weekRange = inputData.week_range ? inputData.week_range : getWeekRange();
-  let exportName = inputData.fileName ? inputData.fileName : '前端组周报'
+  let exportName = inputData.fileName ? inputData.fileName : '前端组周报';
+  let groupId = inputData.groupId ? inputData.groupId : null;
   console.log(`导出周期${weekRange}`)
-  let users = await queryUsers();
+  let users = await queryUsers(groupId);
+  let staffList = users.map(each => {
+    return each.staff_id
+  })
+  console.log(staffList);
   let promiseAll = Promise.all([
     queryWeeklyData(queryProjectsSql, weekRange),
     queryWeeklyData(querySummarizeSql, weekRange),
@@ -52,53 +69,63 @@ exportService.export = async function (ctx, inputData) {
     exportData.interests = [];
     exportData.assists = [];
     for(let project of data[0]){
-      let obj = {};
-      obj.proType = ctx.session["project_state"][project.project_type];
-      obj.branch = ctx.session["staff_branch"][project.branch_id];
-      obj.proName = project.project_name;
-      obj.state = ctx.session["pro_state"][project.project_state_id]
-      obj.next = project.next_work;
-      for( let item of users) {
-        if(item.staff_id === project.staff_id){
-          obj.name = item.staff_notes_id;
-          break;
+      if(staffList.includes(project.staff_id)){
+        let obj = {};
+        obj.proType = ctx.session["project_state"][project.project_type];
+        obj.branch = ctx.session["staff_branch"][project.branch_id];
+        obj.proName = project.project_name;
+        obj.state = ctx.session["pro_state"][project.project_state_id]
+        obj.next = project.next_work;
+        for( let item of users) {
+          if(item.staff_id === project.staff_id){
+            obj.name = item.staff_notes_id;
+            break;
+          }
         }
+        exportData.projects.push(obj);
       }
-      exportData.projects.push(obj);
     }
     for(let summarize of data[1]){
-      let obj = {};
-      obj.name = summarize.staff_name;
-      obj.proName = summarize.project_name;
-      obj.type = summarize.work_type;
-      obj.week = summarize.weekly_work;
-      obj.nextWeek = summarize.next_weekly_work;
-      exportData.summarizes.push(obj);
+      if(staffList.includes(summarize.staff_id)){
+        let obj = {};
+        obj.name = summarize.staff_name;
+        obj.proName = summarize.project_name;
+        obj.type = summarize.work_type;
+        obj.week = summarize.weekly_work;
+        obj.nextWeek = summarize.next_weekly_work;
+        exportData.summarizes.push(obj);
+      }
     }
     for(let output of data[2]){
-      let obj = {};
-      obj.name = output.staff_name;
-      obj.fileName = output.article_name;
-      obj.url = output.article_url;
-      exportData.outputs.push(obj);
+      if(staffList.includes(output.staff_id)){
+        let obj = {};
+        obj.name = output.staff_name;
+        obj.fileName = output.article_name;
+        obj.url = output.article_url;
+        exportData.outputs.push(obj);
+      }
     }
     for(let interest of data[3]){
-      let obj = {};
-      obj.name = interest.staff_name;
-      obj.module = interest.interest_module;
-      obj.technological = interest.interest_technic;
-      obj.putInto = interest.interest_cost;
-      obj.mouth = interest.interest_mouth;
-      exportData.interests.push(obj);
+      if(staffList.includes(interest.staff_id)){
+        let obj = {};
+        obj.name = interest.staff_name;
+        obj.module = interest.interest_module;
+        obj.technological = interest.interest_technic;
+        obj.putInto = interest.interest_cost;
+        obj.mouth = interest.interest_mouth;
+        exportData.interests.push(obj);
+      }
     }
     for(let assist of data[4]) {
-      let obj = {};
-      obj.type = ctx.session['staff_group'][assist.group_id];
-      obj.name = assist.staff_name;
-      obj.branch = ctx.session['staff_branch'][assist.branch_id];
-      obj.resolve = assist.assist_resolve;
-      obj.url = assist.assist_url;
-      exportData.assists.push(obj);
+      if(staffList.includes(assist.staff_id)){
+        let obj = {};
+        obj.type = ctx.session['staff_group'][assist.group_id];
+        obj.name = assist.staff_name;
+        obj.branch = ctx.session['staff_branch'][assist.branch_id];
+        obj.resolve = assist.assist_resolve;
+        obj.url = assist.assist_url;
+        exportData.assists.push(obj);
+      }
     }
     return exportData;
   })
@@ -113,4 +140,12 @@ exportService.export = async function (ctx, inputData) {
   return retInfo;
 }
 
+exportService.queryGroups = async function(ctx, inputData) {
+  let retInfo = new RetInfo();
+  let groups = await queryGroups();
+  retInfo.retCode = "000000";
+  retInfo.retMsg = "导出excel成功";
+  retInfo.data = groups;
+  return retInfo;
+}
 module.exports = exportService;
