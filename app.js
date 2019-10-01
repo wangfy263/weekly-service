@@ -8,6 +8,7 @@ const logger = require('koa-logger')
 const session = require('koa-session')
 const login = require('./routes/login')
 const use = require('./routes/use')
+const staff = require('./routes/staff')
 // const wechat = require('./routes/wechat')
 const timer = require('./services/timer');
 
@@ -59,6 +60,7 @@ app.use(async (ctx, next) => {
 // routes
 app.use(login.routes(), login.allowedMethods())
 app.use(use.routes(), use.allowedMethods())
+app.use(staff.routes(), staff.allowedMethods())
 // app.use(wechat.routes(), wechat.allowedMethods())
 
 // error-handling

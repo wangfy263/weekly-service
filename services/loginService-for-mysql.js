@@ -45,11 +45,19 @@ loginService.initEnum = async () => {
   if (enumerates) {
     const proStateEnum = enumerates[0];
     const branchEnum = enumerates[1];
+    const groupEnum = enumerates[2];
+    const levelEnum = enumerates[3];
+    const typeEnum = enumerates[4];
+    const baseEnum = enumerates[5];
     retInfo.retCode = '000000';
     retInfo.retMsg = '查询初始化m';
     retInfo.data = {
       proStateEnum,
-      branchEnum
+      branchEnum,
+      groupEnum,
+      levelEnum,
+      typeEnum,
+      baseEnum
     }
   }
   return retInfo;
@@ -103,7 +111,11 @@ const queryPromise = (sql) => {
 const initEnumerate = async () => {
   return await Promise.all([
     queryPromise('select * from project_state'),
-    queryPromise('select * from staff_branch')
+    queryPromise('select * from staff_branch'),
+    queryPromise('select * from staff_group'),
+    queryPromise('select * from staff_level'),
+    queryPromise('select * from staff_type'),
+    queryPromise('select * from staff_base')
   ]).catch(err => {
     console.error(err)
   }) 

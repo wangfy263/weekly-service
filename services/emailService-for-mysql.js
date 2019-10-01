@@ -96,4 +96,10 @@ emailService.weeklyNoticeEmail = async function(){
   mail.sendMail(arr, [], '【前端能开&技术栈 项目周报】请To中各位反馈本周周报，明天下午17点前反馈。', '');
 }
 
+/**
+ * 指定提醒人
+ */
+emailService.noticeSomeOne = async function(email, context){
+  mail.sendMail([email], [], context)
+}
 module.exports = emailService;

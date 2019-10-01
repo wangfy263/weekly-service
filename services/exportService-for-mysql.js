@@ -8,7 +8,7 @@ const {
   queryOutputSql,
   queryInterestSql,
   queryAssistSql,
-  queryStaffSql,
+  queryUserALLSql,
   staff_condition,
   queryGroupSql
 } = require('../utils/constant');
@@ -27,7 +27,7 @@ const queryWeeklyData = (table, weekRange) => {
 }
 
 const queryUsers = (groupId) => {
-  let sql = queryStaffSql;
+  let sql = queryUserALLSql;
   if(groupId){
     sql = sql + staff_condition + groupId;
   }
