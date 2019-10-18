@@ -1,5 +1,6 @@
 const RetInfo = require('../utils/retInfo')
 const commonUtils = require('../utils/common')
+const svgCaptcha = require('svg-captcha');
 const {
   property,
   queryUserSql,
@@ -18,14 +19,18 @@ const mysqlDB = require('../utils/mysqlDB')
 
 const loginService = {}
 
-loginService.login = async (ctx, name, pwd) => {
+loginService.login = async (ctx, name, pwd, captcha) => {
   let retInfo = new RetInfo();
   let res = await queryLogin(name);
+  if(!captcha || captcha.toLowerCase() !== ctx.session['captcha'] ){
+    retInfo.retMsg = '请输入正确的验证码';
+    return retInfo;
+  }
   if(!res || res.length === 0){ 
     retInfo.retMsg = '用户名不存在';
     return retInfo;
   }
-  if (res[0].staff_password !== pwd) {
+  if(res[0].staff_password !== pwd) {
     retInfo.retMsg = "密码错误";
     return retInfo;
   }
@@ -34,7 +39,7 @@ loginService.login = async (ctx, name, pwd) => {
   retInfo.data = {
     weekRange: getWeekRange()
   }
-  // ctx.session.user = res[0];
+  ctx.session['captcha'] = '';
   await initSession(ctx, res[0]);
   return retInfo;
 }
@@ -51,7 +56,7 @@ loginService.initEnum = async () => {
     const baseEnum = enumerates[5];
     const roleEnum = enumerates[6];
     retInfo.retCode = '000000';
-    retInfo.retMsg = '查询初始化m';
+    retInfo.retMsg = '查询初始化';
     retInfo.data = {
       proStateEnum,
       branchEnum,
@@ -63,6 +68,27 @@ loginService.initEnum = async () => {
     }
   }
   return retInfo;
+}
+
+// 获取验证码
+loginService.getCaptcha = async (ctx) => {
+  // let retInfo = new RetInfo();
+  const captcha = svgCaptcha.create({ 
+    inverse: false, // 翻转颜色 
+    ignoreChars: '0o1i', // 验证码字符中排除 0o1i
+    fontSize: 30, // 字体大小 
+    noise: 2,  // 噪声线条数 
+    width: 80,  // 宽度 
+    height: 20, // 高度 
+    color: true, // 验证码的字符是否有颜色，默认没有，如果设定了背景，则默认有
+    //background: '#cc9966' // 验证码图片背景颜色
+  }); 
+  const text = captcha.text.toLowerCase(); 
+  const imgSvg = captcha.data;
+  // 保存到session,忽略大小写 
+  ctx.session['captcha'] = text;
+  console.log('生成验证码:' + text); //0xtg 生成的验证码
+  return imgSvg;
 }
 
 const queryLogin = id => {

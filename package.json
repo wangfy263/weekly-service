@@ -27,6 +27,7 @@
     "nodemailer": "^6.1.1",
     "pug": "^2.0.0-rc.1",
     "sqlite3": "^4.0.6",
+    "svg-captcha": "^1.4.0",
     "wechat4u": "^0.7.7"
   },
   "devDependencies": {

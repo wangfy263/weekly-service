@@ -78,6 +78,7 @@ router.post('/delStaff', async (ctx, next) => {
   ctx.body = retInfo;
 })
 
+/* 提醒 */
 router.post('/noticeSomeone', async (ctx, next) => {
   const data = ctx.request.body;
   const user = ctx.session.user;

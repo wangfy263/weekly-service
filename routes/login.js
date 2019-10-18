@@ -14,7 +14,7 @@ router.get('/', async (ctx, next) => {
 router.post('/login', async (ctx, next) => {
   const data = ctx.request.body;
   console.log(data);
-  const retInfo = await loginService.login(ctx, data.name, data.pwd);
+  const retInfo = await loginService.login(ctx, data.name, data.pwd, data.captcha);
   ctx.body = retInfo;
 })
 
@@ -51,6 +51,10 @@ router.post('/logout', async (ctx, next) => {
     retCode: '000000',
     retMsg: '退出成功'
   };
+})
+
+router.get('/captcha', async (ctx, next) => {
+  ctx.body = await loginService.getCaptcha(ctx);
 })
 
 module.exports = router
