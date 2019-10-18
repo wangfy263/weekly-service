@@ -36,5 +36,8 @@ constants.saveStaffSql = 'insert into staff set ?'
 constants.updStaffSql = 'update staff set staff_name = ?, staff_notes_id = ?, staff_email = ?, group_id = ?, base_id = ?, branch_id = ?, level_id = ?, type_id = ?  where staff_id = ?'
 constants.delStaffSql = 'delete from staff where staff_id = ?'
 
-
+constants.saveRoleRelSql = 'insert into staff_role_rel set ?'
+constants.qryUserRolesql = 'select * from staff_role_rel'
+constants.delUserRoleSql = 'delete from staff_role_rel where staff_id = ?'
+// constants.saveRoleSql = 'update staff_role set '
 module.exports = constants;
