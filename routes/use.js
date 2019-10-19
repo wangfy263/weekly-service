@@ -49,7 +49,7 @@ router.post('/findWeeklyDetail', async (ctx, next) => {
     }
     return;
   }
-  const retInfo = await saveService.findWeekly(ctx, data);
+  const retInfo = await saveService.findWeeklyByStaffId(ctx, data);
   ctx.body = retInfo;
 })
 
