@@ -23,6 +23,35 @@ router.post('/save', async (ctx, next) => {
   const retInfo = await saveService.entry(ctx, data);
   ctx.body = retInfo;
 })
+/** 查询周报列表 */
+router.post('/findWeeklys', async (ctx, next) => {
+  const data = ctx.request.body;
+  const user = ctx.session.user;
+  if(!user){
+    ctx.body = {
+      retCode: '999999',
+      retMsg: '请先登录在访问'
+    }
+    return;
+  }
+  const retInfo = await saveService.findWeeklyList(ctx, data);
+  ctx.body = retInfo;
+})
+
+/** 查询周报详情 */
+router.post('/findWeeklyDetail', async (ctx, next) => {
+  const data = ctx.request.body;
+  const user = ctx.session.user;
+  if(!user){
+    ctx.body = {
+      retCode: '999999',
+      retMsg: '请先登录在访问'
+    }
+    return;
+  }
+  const retInfo = await saveService.findWeekly(ctx, data);
+  ctx.body = retInfo;
+})
 
 /** 导出excel
  * 入参：{weekRange: '0419-0426'}

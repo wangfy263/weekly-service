@@ -3,6 +3,13 @@ const mysqlDB = require('../utils/mysqlDB.js')
 const {
   getWeekRange
 } = require('../utils/common');
+const {
+  querySummarizeSql,
+  queryProjectsSql,
+  queryOutputSql,
+  queryInterestSql,
+  queryAssistSql
+} = require('../utils/constant');
 
 const saveService = {}
 const insertProjectSql = "INSERT INTO weekly_report_projects SET ?";
@@ -110,6 +117,83 @@ saveService.entry = async (ctx, data) => {
     retInfo.retMsg = "数据错误，保存失败";
   })
   return retInfo
+}
+
+saveService.findWeeklyList = async (ctx, data) => {
+  let retInfo = new RetInfo();
+  let sums = await findSummarizeByStaff([ctx.session.user.staff_id]);
+  if(sums && sums.length >= 0){
+    retInfo.retCode = '000000';
+    retInfo.retMsg = '成功';
+    retInfo.data = sums;
+  }
+  return retInfo;
+}
+
+saveService.findWeekly = async (ctx, data) => {
+  let retInfo = new RetInfo();
+  let pro = [ctx.session.user.staff_id, data.week];
+  let arr = await Promise.all([
+    findProjectsByStaff(pro),
+    findSummarizeByStaff(pro),
+    findOutputByStaff(pro),
+    findInterestByStaff(pro),
+    findAssistByStaff(pro)
+  ])
+  if(arr && arr.length >= 0){
+    for(each of arr){
+      each.map((item) => {
+        if(item.project_type) item.project_type_name = ctx.session['project_state'][item.project_type]
+        if(item.branch_id) item.branch_name = ctx.session['staff_branch'][item.branch_id]
+        if(item.project_state_id) {
+          item.project_state_name = ctx.session['project_state'][item.project_state_id]
+          item.staff_name = ctx.session.user.staff_name
+        }
+        if(item.group_id) item.group_name = ctx.session['staff_group'][item.group_id]
+        if(item.branch_id) item.branch_name = ctx.session['staff_branch'][item.branch_id]
+      })
+    }
+    retInfo.retCode = '000000';
+    retInfo.retMsg = '查询成功';
+    retInfo.data = arr;
+  }
+  return retInfo;
+}
+
+
+const findSummarizeByStaff = (pro) => {
+  let condition = ' where staff_id = ?'
+  if(pro.length > 1){
+    condition = condition + ' and week_range = ?'
+  }
+  return mysqlDB.queryOnly(querySummarizeSql + condition, pro).catch(err => {
+    console.log(err)
+  })
+}
+
+const findProjectsByStaff = (pro) => {
+  const condition = ' where staff_id = ? and week_range = ?'
+  return mysqlDB.queryOnly(queryProjectsSql + condition, pro).catch(err => {
+    console.log(err)
+  })
+}
+const findOutputByStaff = (pro) => {
+  const condition = ' where staff_id = ? and week_range = ?'
+  return mysqlDB.queryOnly(queryOutputSql + condition, pro).catch(err => {
+    console.log(err)
+  })
+}
+const findInterestByStaff = (pro) => {
+  const condition = ' where staff_id = ? and week_range = ?'
+  return mysqlDB.queryOnly(queryInterestSql + condition, pro).catch(err => {
+    console.log(err)
+  })
+}
+const findAssistByStaff = (pro) => {
+  const condition = ' where staff_id = ? and week_range = ?'
+  return mysqlDB.queryOnly(queryAssistSql + condition, pro).catch(err => {
+    console.log(err)
+  })
 }
 
 module.exports = saveService;
