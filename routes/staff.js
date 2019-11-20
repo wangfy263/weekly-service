@@ -99,7 +99,7 @@ router.post('/noticeSomeone', async (ctx, next) => {
   let retInfo = {}
   console.log(data.email)
   try {
-    await emailService.noticeSomeOne(data.email, '请及时填写周报')
+    await emailService.noticeSomeOne(ctx, data.email)
     retInfo = {
       retCode: '000000',
       retMsg: '成功'
@@ -109,6 +109,7 @@ router.post('/noticeSomeone', async (ctx, next) => {
       retCode: '-1',
       retMsg: '失败'
     }
+    console.log(e)
   }
   ctx.body = retInfo
 })

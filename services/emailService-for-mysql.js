@@ -93,13 +93,14 @@ emailService.weeklyNoticeEmail = async function(){
       arr.push(email.staff_email);
     }
   }
-  mail.sendMail(arr, [], '【前端能开&技术栈 项目周报】请To中各位反馈本周周报，明天下午17点前反馈。', '');
+  mail.sendMail(arr, [], '【前端能开&技术栈 项目周报】请To中各位及时填写本周周报，明天下午17点前统计，周报填写系统地址：http://47.104.199.74:8001/login', '');
 }
 
 /**
  * 指定提醒人
  */
-emailService.noticeSomeOne = async function(email, context){
+emailService.noticeSomeOne = async function(ctx, email){
+  const context = `${ctx.session.user.staff_name}【${ctx.session.user.staff_notes_id}】提醒您，请及时填写周报，系统地址：http://47.104.199.74:8001/login`
   mail.sendMail([email], [], context)
 }
 module.exports = emailService;
