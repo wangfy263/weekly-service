@@ -4,6 +4,7 @@ const {
   getWeekRange
 } = require('../utils/common');
 const {
+  queryUserALLSql,
   querySummarizeSql,
   queryProjectsSql,
   queryOutputSql,
@@ -151,6 +152,7 @@ saveService.findWeeklyByStaffId = async (ctx, data) => {
   ]).catch(err => {
     console.error(err)
   })
+  let users = await findStaffAll()
   if(arr && arr.length >= 0){
     for(each of arr){
       if(!each){
@@ -161,7 +163,10 @@ saveService.findWeeklyByStaffId = async (ctx, data) => {
         if(item.branch_id) item.branch_name = ctx.session['staff_branch'][item.branch_id]
         if(item.project_state_id) {
           item.project_state_name = ctx.session['project_state'][item.project_state_id]
-          item.staff_name = ctx.session.user.staff_name
+          // item.staff_name = ctx.session.user.staff_name
+          item.staff_name = users.reduce((x, y) => {
+            return x + (y.staff_id === item.staff_id ? y.staff_name : '')
+          }, '')
         }
         if(item.group_id) item.group_name = ctx.session['staff_group'][item.group_id]
         if(item.branch_id) item.branch_name = ctx.session['staff_branch'][item.branch_id]
@@ -308,6 +313,12 @@ const findAssistByStaff = (pro) => {
     params.push(pro.week)
   }
   return mysqlDB.queryOnly(queryAssistSql + condition, params).catch(err => {
+    console.log(err)
+  })
+}
+
+const findStaffAll = () => {
+  return mysqlDB.queryOnly(queryUserALLSql).catch(err => {
     console.log(err)
   })
 }

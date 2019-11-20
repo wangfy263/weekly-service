@@ -7,6 +7,7 @@ properties.dbConfig  = {
   password: 'LCetpLvT6PLVOOhSXc4IU8H245CihVVsXnRYsGRQUiyBNx6zuvl2XkC9W7YLsqkjvUfZpeTA6Miel7wzzE04B0cUPcgotnxP7Oeik2S+qz9EZMU92lWoIBb4HYl7EFg9g8zhpg1Ha2JePnkmvVkpkZoGtxMmD4b2ZIuO3OWXhwE=',
   //database: 'D1DIzC7hy8ujX7stwR/WImulVTWIe6FS4GCOTNmSXDCV5Pzii/IgjNlGXh36KWIAztwHASgvJ3/5qwZ5T8aGaqvOAOsKKCVM1FzADhHlBRkdpubkgzoBw9d205mYQohUBBvUtUCQfaNL5cRUNOI5gvlJKAp8/FiDD+utt5fpuxw='
   database: process.env.NODE_ENV === 'development' ? developDB : productDB,
+  // database: productDB,
 }
 properties.senderConfig = {
   user: 'bfwXFeKyzi/F9rExK8oDyj2YQC7tlRz5ylbffAryefVz7SEwivCQrLgemyp7a6dm6ky2IFbCFD3xjiNmsl8mnk9WMhJyGRyzxZJiBwE63HNI7EGoI+78e1X95CXs7kw2kkj5geiZYktkuIpOxL0CaM8Xi5OsEHv0wyG+jFH2IOM=',
