@@ -29,6 +29,7 @@ router.post('/getUserInfo', async (ctx, next) => {
     }
     return;
   }
+  delete user.staff_password;
   const access = ctx.session.access;
   user.access = access;
   const retInfo = {

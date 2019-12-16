@@ -75,13 +75,13 @@ loginService.getCaptcha = async (ctx) => {
   // let retInfo = new RetInfo();
   const captcha = svgCaptcha.create({ 
     inverse: false, // 翻转颜色 
-    ignoreChars: '0o1i', // 验证码字符中排除 0o1i
+    ignoreChars: '0oO1liI', // 验证码字符中排除 0o1i
     fontSize: 30, // 字体大小 
     noise: 2,  // 噪声线条数 
     width: 80,  // 宽度 
     height: 20, // 高度 
     color: true, // 验证码的字符是否有颜色，默认没有，如果设定了背景，则默认有
-    //background: '#cc9966' // 验证码图片背景颜色
+    background: '#cc9966' // 验证码图片背景颜色
   }); 
   const text = captcha.text.toLowerCase(); 
   const imgSvg = captcha.data;

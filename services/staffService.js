@@ -27,7 +27,8 @@ staffService.find = async function(ctx, data){
       item.branch_name = ctx.session['staff_branch'][item.branch_id]
       item.level_name = ctx.session['staff_level'][item.level_id]
       item.type_name = ctx.session['staff_type'][item.type_id]
-      item.isSubmit = lst.includes(item.staff_id) ? 0 : 1 
+      item.isSubmit = lst.includes(item.staff_id) ? 0 : 1
+      delete item.staff_password
       return item
     })
     retInfo.retCode = '000000';
