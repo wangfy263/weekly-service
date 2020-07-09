@@ -67,7 +67,10 @@ const queryWeeklyData = (sql) => {
  * 邮件通知周报未发的人员
  */
 emailService.noWeeklyEmail = async function(ctx, data){
-  let weekRange = data.weekRange;
+  let weekRange = null;
+  if(data){
+    weekRange = data.weekRange;
+  }
   try{
     if(!weekRange){
       weekRange = getWeekRange();

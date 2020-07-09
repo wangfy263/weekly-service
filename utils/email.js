@@ -64,13 +64,14 @@ mail.sendMail = async function sendMail(receivers, cc, subject, text) {
     text: text
   };
 
-  let info = await transporter.sendMail(message);
+  // @2020-07-09，暂时注视掉，避免给原同事发邮件
+  // let info = await transporter.sendMail(message);
 
-  console.log('Message sent successfully!');
-  console.log(nodemailer.getTestMessageUrl(info));
+  // console.log('Message sent successfully!');
+  // console.log(nodemailer.getTestMessageUrl(info));
 
   // only needed when using pooled connections
-  transporter.close();
+  // transporter.close();
 }
 
 module.exports = mail;
